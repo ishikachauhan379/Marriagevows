@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>7 Vows — For Samyak ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#fff4f8; --bg2:#fff0f6; --accent:#ff6b94; --muted:#6b5966; --card:#fff; --maxw:780px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+  background: linear-gradient(160deg,var(--bg1),var(--bg2));
+  display:flex;align-items:center;justify-content:center;padding:24px;overflow:hidden;color:#352334;
+}
+.bg-layer{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(255,107,148,0.06), transparent 10%),
+    radial-gradient(circle at 90% 80%, rgba(255,200,220,0.05), transparent 12%);
+}
+.heart-float{position:absolute;will-change:transform,opacity;user-select:none;font-size:18px;opacity:0.12;animation: floatUp linear infinite;}
+@keyframes floatUp {0%{transform:translateY(10vh) scale(.9);opacity:.14}50%{opacity:.06}100%{transform:translateY(-20vh) scale(1.2);opacity:.02}}
+.wrap{position:relative;z-index:2;width:100%;max-width:var(--maxw);padding:18px}
+.card{background:linear-gradient(180deg,#fff,#fff7fb);border-radius:16px;padding:22px;box-shadow:0 10px 30px rgba(40,18,30,0.06);border:1px solid rgba(255,107,148,0.06)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#ffd1e3);display:grid;place-items:center;font-size:22px;color:#fff}
+h1{margin:0;font-size:20px}
+.lead{margin:6px 0 0;color:var(--muted);font-size:13px}
+.vow-stage{margin-top:14px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.vow-card{width:100%;max-width:640px;background:var(--card);border-radius:12px;padding:18px;text-align:center;border:1px solid rgba(255,107,148,0.04);box-shadow:0 8px 20px rgba(35,18,30,0.04)}
+.vow-count{font-size:13px;color:var(--muted);margin-bottom:6px}
+.vow-text{font-size:20px;color:#3a2534;line-height:1.45;margin-bottom:8px}
+.controls{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+/* buttons */
+.btn{appearance:none;border:0;padding:10px 18px;border-radius:999px;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;font-size:15px;box-shadow:0 8px 20px rgba(255,107,148,0.12);transition:transform .14s}
+.btn.secondary{background:transparent;color:var(--muted);border:1px solid rgba(60,50,60,0.06);box-shadow:none}
+.btn:active{transform:translateY(2px)}
+.btn[disabled]{opacity:.5;pointer-events:none}
+.dots{display:flex;gap:8px;justify-content:center;margin-top:8px}
+.dot{width:10px;height:10px;border-radius:999px;background:rgba(40,30,40,0.08);transition:all .25s}
+.dot.active{background:linear-gradient(90deg,var(--accent),#ff9fc0);transform:scale(1.25);box-shadow:0 6px 12px rgba(255,107,148,0.08)}
+/* final full-screen message */
+.full-final {
+  position:fixed;inset:0;display:grid;place-items:center;background:linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,245,250,0.96));z-index:9;
+  text-align:center;padding:20px;
+}
+.full-final h2{font-size:36px;color:#d82463;margin:0 0 8px;letter-spacing:0.6px}
+.full-final p{color:var(--muted);margin:0 0 14px}
+.full-final .huge {font-size:42px;font-weight:800;color:#b8004a; margin-top:8px; animation: pop 900ms ease;}
+@keyframes pop{0%{transform:scale(.85)}60%{transform:scale(1.05)}100%{transform:scale(1)}}
+
+/* canvas confetti */
+canvas#confetti { position:fixed; inset:0; z-index:8; pointer-events:none; }
+
+/* responsive */
+@media (max-width:640px){
+  .vow-text{font-size:18px}
+  .logo{width:50px;height:50px}
+  h1{font-size:18px}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-layer" id="bgLayer"></div>
+
+<div class="wrap">
+  <div class="card" role="main" aria-labelledby="pageTitle">
+    <div class="top">
+      <div class="brand">
+        <div class="logo">💖</div>
+        <div>
+          <h1 id="pageTitle">Our 7 Vows — Samyak 💍</h1>
+          <div class="lead">Har vow ko padh ke "I Accept" dabao — phir surprise milega ✨</div>
+        </div>
+      </div>
+      <div style="color:var(--muted);font-size:13px">Made with ♥ by Ishika</div>
+    </div>
+
+    <section class="vow-stage" aria-live="polite">
+      <div class="vow-card" id="vowCard">
+        <div class="vow-count" id="vowCount">Vow 1 of 7</div>
+        <div class="vow-text" id="vowText">Loading...</div>
+        <div style="font-size:13px;color:var(--muted)">Accept karne ke liye button dabao</div>
+      </div>
+
+      <div class="controls">
+        <button class="btn" id="acceptBtn">I Accept ❤️</button>
+        <button class="btn secondary" id="skipBtn">Not yet</button>
+      </div>
+
+      <div class="dots" id="dots" aria-hidden="true"></div>
+    </section>
+  </div>
+</div>
+
+<canvas id="confetti"></canvas>
+
+<!-- final full-screen message (hidden until finished) -->
+<div id="finalScreen" class="full-final" style="display:none">
+  <div>
+    <div style="font-size:56px">💞</div>
+    <h2>You're happily married to me , i love you so much Samyak❤️🥺, you are my entire World🥺,I just want to spend the rest of my life with you❤️🥺</h2>
+    <div class="huge">Samyak ❤️ Ishika</div>
+    <p style="margin-top:12px">Refresh the page to view vows again.</p>
+  </div>
+</div>
+
+<script>
+/* -------------------------
+   Configuration
+   ------------------------- */
+const BACKEND_URL = "YOUR_BACKEND_URL"; // e.g. "https://your-server.com" or "http://localhost:4000"
+const recipientEmail = "ishikachauhan626@gmail.com"; // your email that receives the notification
+
+/* -------------------------
+   Content & UI state
+   ------------------------- */
+const name = "Samyak";
+const vows = [
+  `Main hamesha tumhara saath dunga — khushi aur mushkil dono mein. ❤️`,
+  `Main tumhari respect, trust aur privacy ka hamesha khayal rakhunga.`,
+  `Main tumhare sapno ko encourage karunga aur saath milkar grow karunga.`,
+  `Main tumse hamesha sach bolunga aur tumhari feelings ka sammaan karunga.`,
+  `Main choti choti cheezon mein bhi gratitude dikhauga — aur fries share karna mat bhoolna. 🍟`,
+  `Main tumhare family aur doston ke saath pyaar aur izzat se pesh aaunga.`,
+  `Har roz main pyaar karne ki koshish karunga — aur mazaak bhi sahunga. ♾️`
+];
+
+let index = 0;
+/* DOM refs */
+const vowText = document.getElementById('vowText');
+const vowCount = document.getElementById('vowCount');
+const acceptBtn = document.getElementById('acceptBtn');
+const skipBtn = document.getElementById('skipBtn');
+const dotsWrap = document.getElementById('dots');
+const finalScreen = document.getElementById('finalScreen');
+const confettiCanvas = document.getElementById('confetti');
+const bgLayer = document.getElementById('bgLayer');
+
+/* Build dots */
+function buildDots(){
+  dotsWrap.innerHTML = '';
+  for(let i=0;i<vows.length;i++){
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0 ? ' active' : '');
+    dotsWrap.appendChild(d);
+  }
+}
+buildDots();
+
+/* Show vow i */
+function showVow(i){
+  index = i;
+  vowCount.textContent = `Vow ${i+1} of ${vows.length}`;
+  vowText.textContent = vows[i];
+  const dots = dotsWrap.querySelectorAll('.dot');
+  dots.forEach((d,idx)=> d.classList.toggle('active', idx<=i));
+  const card = document.getElementById('vowCard');
+  card.animate([{ transform:'translateY(12px) scale(.995)', opacity:0 }, { transform:'translateY(0) scale(1)', opacity:1 }], { duration:300, easing:'ease-out' });
+}
+
+/* Accept click */
+acceptBtn.addEventListener('click', async ()=>{
+  acceptBtn.animate([{ transform:'scale(1)'}, { transform:'scale(.96)' }, { transform:'scale(1)' }], { duration:200 });
+  spawnPopHeart(acceptBtn);
+
+  if(index < vows.length - 1){
+    setTimeout(()=> showVow(index + 1), 260);
+  } else {
+    // final
+    setTimeout(()=> finalize(), 340);
+  }
+});
+
+/* Skip wiggle */
+skipBtn.addEventListener('click', ()=>{
+  const el = document.getElementById('vowCard');
+  el.animate([{ transform:'translateX(0)' }, { transform:'translateX(-8px)' }, { transform:'translateX(8px)' }, { transform:'translateX(0)' }], { duration:360 });
+});
+
+/* pop heart */
+function spawnPopHeart(target){
+  const rect = target.getBoundingClientRect();
+  const heart = document.createElement('div');
+  heart.textContent = '💗';
+  heart.style.position = 'fixed';
+  heart.style.left = (rect.left + rect.width/2 - 10) + 'px';
+  heart.style.top = (rect.top - 8) + 'px';
+  heart.style.fontSize = '20px';
+  heart.style.zIndex = 15;
+  heart.style.pointerEvents = 'none';
+  document.body.appendChild(heart);
+  heart.animate([{ transform:'translateY(0) scale(.9)', opacity:0 }, { transform:'translateY(-28px) scale(1.1)', opacity:1 }, { transform:'translateY(-60px) scale(.8)', opacity:0 }], { duration:700, easing:'cubic-bezier(.2,.8,.2,1)' });
+  setTimeout(()=> heart.remove(), 780);
+}
+
+/* floating hearts bg */
+function placeFloatingHearts(){
+  const count = 8;
+  for(let i=0;i<count;i++){
+    const h = document.createElement('div');
+    h.className = 'heart-float';
+    h.textContent = '❤';
+    const size = 12 + Math.random()*28;
+    h.style.fontSize = size + 'px';
+    h.style.left = (Math.random()*100) + 'vw';
+    h.style.top = (Math.random()*100) + 'vh';
+    h.style.opacity = (0.06 + Math.random()*0.16);
+    h.style.animationDuration = (18 + Math.random()*28) + 's';
+    h.style.transform = `translateY(0) rotate(${Math.random()*40-20}deg)`;
+    bgLayer.appendChild(h);
+  }
+}
+placeFloatingHearts();
+
+/* Confetti mini-engine */
+const confetti = (() => {
+  const canvas = confettiCanvas;
+  const ctx = canvas.getContext('2d');
+  let W = canvas.width = innerWidth;
+  let H = canvas.height = innerHeight;
+  const pieces = [];
+  function random(min,max){ return Math.random()*(max-min)+min }
+  window.addEventListener('resize', ()=> { W = canvas.width = innerWidth; H = canvas.height = innerHeight; });
+  function spawn(n=120){
+    pieces.length = 0;
+    for(let i=0;i<n;i++){
+      pieces.push({ x: random(0,W), y: random(-H,0), r: random(6,12), d: random(3,10), tilt: random(-10,10), color: `hsl(${random(320,360)},70%,${random(50,70)}%)`, speed: random(1.5,4) });
+    }
+    run();
+  }
+  let raf = null;
+  function run(){
+    cancelAnimationFrame(raf);
+    function frame(){
+      ctx.clearRect(0,0,W,H);
+      for(let p of pieces){
+        p.x += Math.sin(p.d) * 0.7 + p.tilt*0.01;
+        p.y += p.speed;
+        p.tilt += 0.02;
+        ctx.beginPath();
+        ctx.fillStyle = p.color;
+        ctx.save();
+        ctx.translate(p.x,p.y);
+        ctx.rotate(p.tilt);
+        ctx.fillRect(-p.r/2, -p.r/2, p.r, p.r*0.6);
+        ctx.restore();
+        if(p.y > H + 20){ p.y = -10; p.x = Math.random()*W; }
+      }
+      raf = requestAnimationFrame(frame);
+    }
+    frame();
+    setTimeout(()=> { cancelAnimationFrame(raf); ctx.clearRect(0,0,W,H); }, 6000);
+  }
+  return { spawn };
+})();
+
+/* final sequence */
+async function finalize(){
+  // 1) show confetti + hearts
+  confetti.spawn(160);
+  burstHearts(36);
+
+  // 2) show final screen (no restart/copy) — refresh to restart
+  finalScreen.style.display = 'grid';
+  document.body.style.overflow = 'hidden';
+
+  // 3) POST to backend to send email notification
+  try {
+    const resp = await fetch(BACKEND_URL + '/api/send-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        groom_name: name,
+        bride_name: "Ishika",
+        recipient_email: recipientEmail,
+        message: `${name} accepted all 7 vows on ${new Date().toLocaleString()}`
+      })
+    });
+    // optional: show console
+    const json = await resp.json();
+    console.log('Email API response:', json);
+  } catch(err) {
+    console.warn('Email backend failed:', err);
+  }
+}
+
+/* hearts burst final */
+function burstHearts(n=20){
+  for(let i=0;i<n;i++){
+    const el = document.createElement('div');
+    el.textContent = ['💖','💗','💕','💞'][Math.floor(Math.random()*4)];
+    el.style.position = 'fixed';
+    el.style.left = (15 + Math.random()*70) + 'vw';
+    el.style.top = (-20 - Math.random()*30) + 'vh';
+    el.style.fontSize = (12 + Math.random()*36) + 'px';
+    el.style.zIndex = 11;
+    el.style.pointerEvents = 'none';
+    document.body.appendChild(el);
+    const dur = 2200 + Math.random()*3000;
+    el.animate([{ transform:'translateY(0) rotate(0deg)', opacity:0 }, { transform:`translateY(${70 + Math.random()*90}vh) rotate(${Math.random()*360-180}deg)`, opacity:1 }], { duration:dur, easing:'cubic-bezier(.2,.8,.2,1)'});
+    setTimeout(()=> el.remove(), dur+80);
+  }
+}
+
+/* init UI */
+setTimeout(()=> showVow(0), 240);
+/* keyboard support */
+window.addEventListener('keydown', (e)=> {
+  if(e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowRight') acceptBtn.click();
+  else if(e.key === 'ArrowLeft') if(index>0) showVow(index-1);
+});
+</script>
+</body>
+</html>
